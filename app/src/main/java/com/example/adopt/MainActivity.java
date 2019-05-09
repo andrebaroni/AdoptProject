@@ -3,7 +3,7 @@ package com.example.adopt;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +14,17 @@ public class MainActivity extends AppCompatActivity {
     EditText username, password;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginButton = (Button)findViewById(R.id.loginButton);
+
+
+
+    loginButton = (Button)findViewById(R.id.loginButton);
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
 
@@ -36,11 +41,17 @@ public class MainActivity extends AppCompatActivity {
                     alert.setMessage("Login realizado");
                     alert.show();
                     //mudar para outra tela
+                    openPaginaPrincipal();
                 }else{
                     alert.setMessage("Usuário ou senha incorretos");
                     alert.show();
                 }
             }
         });
+    }
+
+    public void openPaginaPrincipal(){
+        Intent intent = new Intent(this, paginaprincipal.class);
+        startActivity(intent);
     }
 }
