@@ -1,22 +1,33 @@
 package com.example.adopt;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 
 public class paginaprincipal extends AppCompatActivity {
 
+    Button logoutButton;
+    TextView userName;
     public ArrayList<String> al;
     private ArrayAdapter arrayAdapter;
     private int i;
-
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
 
 
@@ -24,7 +35,8 @@ public class paginaprincipal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pagina_principal);
-        //ButterKnife.inject(this);
+        logoutButton = (Button)findViewById(R.id.logoutButton);
+        userName = (TextView) findViewById(R.id.userName);
 
         al = new ArrayList<>();
         al.add("Cleita");//nome dos cards
@@ -36,6 +48,18 @@ public class paginaprincipal extends AppCompatActivity {
         al.add("Felipe Neto");
         al.add("Uinderson");
         arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+
+
+        mAuth = FirebaseAuth.getInstance();
+        userName.setText(mAuth.getCurrentUser().getEmail());
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                finish();
+                openLogin();
+            }
+        });
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
@@ -83,5 +107,12 @@ public class paginaprincipal extends AppCompatActivity {
                 Toast.makeText(paginaprincipal.this, "Click!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void openLogin(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        return;
     }
 }
