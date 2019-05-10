@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         loginButton = (Button)findViewById(R.id.loginButton);
-        email = (EditText)findViewById(R.id.email);
+        email = (EditText)findViewById(R.id.txtName);
         password = (EditText)findViewById(R.id.password);
         cadastrar = (TextView) findViewById(R.id.cadastrar);
 
