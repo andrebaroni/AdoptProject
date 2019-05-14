@@ -1,10 +1,10 @@
 package com.example.adopt;
 
 public class Usuario {
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
+        //this.senha = senha;
         //this.sexo = sexo;
     }
 
@@ -20,16 +20,16 @@ public class Usuario {
         return email;
     }
 
-    public void setSenha(String senha) {
-        this.email = email;
-    }
+    //public void setSenha(String senha) {
+        //this.senha = senha;
+    //}
 
-    public String getSenha() {
-        return senha;
-    }
+    //public String getSenha() {
+        //return senha;
+    //}
 
     private String nome;
     private String email;
-    private String senha;
+    //private String senha;
     private String sexo;
 }

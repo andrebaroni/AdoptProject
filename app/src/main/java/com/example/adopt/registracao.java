@@ -74,9 +74,9 @@ public class registracao extends AppCompatActivity {
         //int selectId = mRadioGroup.getCheckedRadioButtonId();
         //final RadioButton radioButton = (RadioButton) findViewById(selectId);
 
-        final Usuario usuario = new Usuario(nome, emailUsuario, senha);
+        final Usuario usuario = new Usuario(nome, emailUsuario);
 
-        mAuth.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()).addOnCompleteListener(registracao.this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(usuario.getEmail(), senha).addOnCompleteListener(registracao.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
@@ -87,9 +87,8 @@ public class registracao extends AppCompatActivity {
                 //return;
                 //}
                 else{
-                    //String userId = mAuth.getCurrentUser().getUid();
-                    //usuarios.push().child(userId);
-                    usuarios.setValue(usuario); //========================================================================= nao add nem fodendo o usuario
+                    String userId = mAuth.getCurrentUser().getUid();
+                    usuarios.child("Uid").child(userId).setValue(usuario);
                     Toast.makeText(registracao.this, "E-mail cadastrado!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
