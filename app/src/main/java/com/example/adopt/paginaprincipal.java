@@ -3,6 +3,7 @@ package com.example.adopt;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -27,6 +33,7 @@ public class paginaprincipal extends AppCompatActivity {
     private ArrayAdapter arrayAdapter;
     private int i;
     private FirebaseAuth mAuth;
+    private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
 
@@ -51,6 +58,10 @@ public class paginaprincipal extends AppCompatActivity {
 
 
         mAuth = FirebaseAuth.getInstance();
+
+        //String name = ref.child("Users").child("Uid").child(mAuth.getUid()).child("nome").toString(); // salva o caminho no nome: https://adopt-680ed.firebaseio.com/Users/Uid/GAB4uCTgdTPy2FlPRmsWabdBhDG2/nome
+        //mas nao salva o proprio nome
+        //userName.setText(ref.child("Users").child("Uid").child(mAuth.getUid()).child("nome").toString());
         userName.setText(mAuth.getCurrentUser().getEmail());
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
