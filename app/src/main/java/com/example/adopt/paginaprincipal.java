@@ -2,6 +2,7 @@ package com.example.adopt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -59,10 +61,20 @@ public class paginaprincipal extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        //String name = ref.child("Users").child("Uid").child(mAuth.getUid()).child("nome").toString(); // salva o caminho no nome: https://adopt-680ed.firebaseio.com/Users/Uid/GAB4uCTgdTPy2FlPRmsWabdBhDG2/nome
-        //mas nao salva o proprio nome
-        //userName.setText(ref.child("Users").child("Uid").child(mAuth.getUid()).child("nome").toString());
-        userName.setText(mAuth.getCurrentUser().getEmail());
+        String user_Id = mAuth.getUid();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +130,15 @@ public class paginaprincipal extends AppCompatActivity {
                 Toast.makeText(paginaprincipal.this, "Click!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showData(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+            Usuario userInfo = new Usuario();
+            userInfo.setNome(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getNome());
+            userInfo.setEmail(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getEmail());
+            userName.setText(userInfo.getNome());
+        }
     }
 
     public void openLogin(){
