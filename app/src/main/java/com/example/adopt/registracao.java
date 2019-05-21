@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class registracao extends AppCompatActivity {
 
     Button registerButton;
+    Switch switch1;
     EditText email, password, txtName;
     private RadioGroup mRadioGroup;
 
@@ -54,6 +56,7 @@ public class registracao extends AppCompatActivity {
         password = (EditText)findViewById(R.id.password);
         txtName = (EditText) findViewById(R.id.txtName);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        switch1 = (Switch) findViewById(R.id.switch1);
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +74,13 @@ public class registracao extends AppCompatActivity {
         final String emailUsuario = email.getText().toString();
         final String senha = password.getText().toString();
         final String nome = txtName.getText().toString();
+        final Boolean switchState = switch1.isChecked();
         //int selectId = mRadioGroup.getCheckedRadioButtonId();
         //final RadioButton radioButton = (RadioButton) findViewById(selectId);
 
-        final Usuario usuario = new Usuario(nome, emailUsuario);
+        final Usuario usuario = new Usuario();
+        usuario.setEmail(emailUsuario);
+        usuario.setNome(nome);
 
         mAuth.createUserWithEmailAndPassword(usuario.getEmail(), senha).addOnCompleteListener(registracao.this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -82,12 +88,15 @@ public class registracao extends AppCompatActivity {
 
                 if(!task.isSuccessful()){
                     Toast.makeText(registracao.this, "E-mail não existe!", Toast.LENGTH_SHORT).show();
-                }//else if(radioButton.getText() == null){
-                //Toast.makeText(registracao.this, "Selecione um sexo!", Toast.LENGTH_SHORT).show();
-                //return;
-                //}
-                else{
+                }else if(switchState == true){
                     String userId = mAuth.getCurrentUser().getUid();
+                    usuario.setAnimal(true);
+                    usuarios.child("UidPet").child(userId).setValue(usuario);
+                    finish();
+                }
+                else if(switchState == false){ //nao é animal
+                    String userId = mAuth.getCurrentUser().getUid();
+                    usuario.setAnimal(false);
                     usuarios.child("Uid").child(userId).setValue(usuario);
                     Toast.makeText(registracao.this, "E-mail cadastrado!", Toast.LENGTH_SHORT).show();
                     finish();

@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,27 +47,22 @@ public class paginaprincipal extends AppCompatActivity {
         setContentView(R.layout.pagina_principal);
         logoutButton = (Button)findViewById(R.id.logoutButton);
         userName = (TextView) findViewById(R.id.userName);
+        userName.setText(" ");
+        checkUserType();
 
         al = new ArrayList<>();
-        al.add("Cleita");//nome dos cards
-        al.add("Murila");
-        al.add("Leticia");
-        al.add("Juju Blackhole");
-        al.add("Karla");
-        al.add("Marina");
-        al.add("Felipe Neto");
-        al.add("Uinderson");
         arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
 
 
         mAuth = FirebaseAuth.getInstance();
 
-        String user_Id = mAuth.getUid();
+        final String user_Id = mAuth.getUid();
+
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+                showUserData(dataSnapshot, userType);
             }
 
             @Override
@@ -110,11 +106,6 @@ public class paginaprincipal extends AppCompatActivity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                al.add("Jooj ".concat(String.valueOf(i)));
-                arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-                i++;
             }
 
             @Override
@@ -132,12 +123,14 @@ public class paginaprincipal extends AppCompatActivity {
         });
     }
 
-    private void showData(DataSnapshot dataSnapshot) {
+    public void showUserData(DataSnapshot dataSnapshot, String userType) {
+
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             Usuario userInfo = new Usuario();
-            userInfo.setNome(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getNome());
-            userInfo.setEmail(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getEmail());
+            userInfo.setNome(ds.child(userType).child(mAuth.getUid()).getValue(Usuario.class).getNome());
+            userInfo.setEmail(ds.child(userType).child(mAuth.getUid()).getValue(Usuario.class).getEmail());
             userName.setText(userInfo.getNome());
+
         }
     }
 
@@ -146,5 +139,91 @@ public class paginaprincipal extends AppCompatActivity {
         startActivity(intent);
         finish();
         return;
+    }
+
+    public void getAvailableAnimals(String type){
+        DatabaseReference availableAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Users").child(type);
+        availableAnimalsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                if(dataSnapshot.exists()){
+                    al.add(dataSnapshot.child("nome").getValue().toString());
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+
+    public String userType;
+    public String notUserType;
+
+    public void checkUserType(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference humanDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Uid");
+        humanDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.getKey().equals(user.getUid())){
+                    userType = "Uid";
+                    notUserType = "UidPet";
+                    getAvailableAnimals(notUserType);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference petDb = FirebaseDatabase.getInstance().getReference().child("Users").child("UidPet");
+        petDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                if(dataSnapshot.getKey().equals(user.getUid())){
+                    userType = "UidPet";
+                    notUserType = "Uid";
+                    getAvailableAnimals(notUserType);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }
