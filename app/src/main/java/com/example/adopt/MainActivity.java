@@ -15,6 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     TextView cadastrar;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+    private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+    Usuario userInfo = new Usuario();
 
 
 
@@ -59,9 +66,27 @@ public class MainActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(emailUsuario, senha).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            ref.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //showData(dataSnapshot);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            //Boolean isAnimal = ref.child("Users").child("Uid").child(mAuth.getUid()).child("animal");
+                            //Boolean isAnimal = userInfo.getAnimal();
+                            //Toast.makeText(MainActivity.this, isAnimal.toString(), Toast.LENGTH_SHORT).show();
                             if (!task.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "Email ou senha estão errados!", Toast.LENGTH_SHORT).show();
-                            } else {
+                            }//else if( isAnimal == true){ //se for animal, transfere para tela da leticia
+                                //Toast.makeText(MainActivity.this, "pagina animal", Toast.LENGTH_SHORT).show();
+                            //}
+                            else {//if( isAnimal == false){
                                 openPaginaPrincipal();
                             }
                         }
@@ -78,28 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 openRegistracao();
             }
         });
-
-        /**loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String emailUser = email.getText().toString();
-                String senha = password.getText().toString();
-                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-
-                //apenas para teste:
-                if(emailUser.equals("andrebaroni") && senha.equals("12345")){
-                    alert.setMessage("Login realizado");
-                    alert.show();
-                    //mudar para outra tela
-                    openPaginaPrincipal();
-                    finish();
-                    return;
-                }else{
-                    alert.setMessage("Usuário ou senha incorretos");
-                    alert.show();
-                }
-            }
-        });**/
     }
 
     public void openPaginaPrincipal(){
@@ -110,5 +113,16 @@ public class MainActivity extends AppCompatActivity {
     public void openRegistracao(){
         Intent intent = new Intent(this, registracao.class);
         startActivity(intent);
+    }
+
+
+    private void showData(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+            userInfo.setNome(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getNome());
+            userInfo.setEmail(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getEmail());
+            userInfo.setAnimal(ds.child("Uid").child(mAuth.getUid()).getValue(Usuario.class).getAnimal());
+            Boolean isAnimal = userInfo.getAnimal();
+        }
     }
 }
