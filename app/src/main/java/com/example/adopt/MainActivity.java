@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button loginButton;
     EditText email, password;
-    TextView cadastrar;
+    TextView cadastrar, cadastrarPet;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button)findViewById(R.id.loginButton);
         email = (EditText)findViewById(R.id.txtName);
         password = (EditText)findViewById(R.id.password);
-        cadastrar = (TextView) findViewById(R.id.cadastrar);
+        cadastrar = (TextView) findViewById(R.id.cadastroPet);
+        cadastrarPet = (TextView) findViewById(R.id.cadastroPet);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openRegistracao();
+            }
+        });
+
+        cadastrarPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCadastroPet();
             }
         });
 
@@ -109,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRegistracao(){
         Intent intent = new Intent(this, registracao.class);
+        startActivity(intent);
+    }
+
+    public void openCadastroPet(){
+        Intent intent = new Intent(this, CadastroPet.class);
         startActivity(intent);
     }
 }

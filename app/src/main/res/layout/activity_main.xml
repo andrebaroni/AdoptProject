@@ -12,7 +12,7 @@
         android:layout_width="286dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="84dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="248dp"
         android:backgroundTint="#C0CCDA"
         android:ems="10"
         android:hint="Senha"
@@ -42,13 +42,13 @@
         android:id="@+id/imageView2"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="52dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.986"
+        app:layout_constraintVertical_bias="0.922"
         app:srcCompat="@drawable/user" />
 
     <ImageView
@@ -56,12 +56,15 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="168dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/password"
-        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.828"
         app:srcCompat="@drawable/password" />
 
     <EditText
@@ -70,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="72dp"
         android:backgroundTint="#C0CCDA"
         android:ems="10"
         android:hint="E-mail"
@@ -80,7 +83,7 @@
         android:textColorLink="#C0CCDA"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintStart_toEndOf="@+id/imageView2" />
 
     <ImageView
@@ -101,7 +104,7 @@
         android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="160dp"
         android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +126,23 @@
         android:id="@+id/textView3"
         android:layout_width="182dp"
         android:layout_height="26dp"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="36dp"
+        android:width="237dp"
+        android:height="37dp"
+        android:text="Colocar Pet para adoção?"
+        android:textColor="#DFE3E3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.965" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="182dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="36dp"
         android:width="237dp"
@@ -133,10 +152,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.925" />
 
     <TextView
         android:id="@+id/cadastrar"
+        android:layout_width="114dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="36dp"
+        android:width="130.5dp"
+        android:height="37dp"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:text="Cadastrar Pet"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.148"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.965" />
+
+    <TextView
+        android:id="@+id/cadastrar4"
         android:layout_width="114dp"
         android:layout_height="26dp"
         android:layout_marginStart="8dp"
@@ -151,9 +191,9 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.925" />
 
 </android.support.constraint.ConstraintLayout>
